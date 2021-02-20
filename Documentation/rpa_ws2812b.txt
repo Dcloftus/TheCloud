@@ -1,0 +1,11 @@
+pixels.fill()
+
+setPixelColor(p, c);
+setPixelColor(p, r, g, b);
+Parameters
+p [uint8_t]: The pixel to set, 0 to 9.
+c [uint32_t]: 24-bit RGB color value, 0xRRGGBB.
+r [uint8_t]: 8-bit red value, 0 to 255.
+g [uint8_t]: 8-bit green value, 0 to 255.
+b [uint8_t]: 8-bit blue value, 0 to 255.
+Returns - Nothing

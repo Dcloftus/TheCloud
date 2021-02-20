@@ -1,0 +1,316 @@
+
+Reaponse parameters
+    coord
+        coord.lon City geo location, longitude
+        coord.lat City geo location, latitude
+    weather (more info Weather condition codes)
+        weather.id Weather condition id
+        weather.main Group of weather parameters (Rain, Snow, Extreme etc.)
+        weather.description Weather condition within the group. You can get the output in your language. Learn more
+        weather.icon Weather icon id
+    base Internal parameter
+    main
+        main.temp Temperature. Unit Default: Kelvin, Metric: Celsius, Imperial: Fahrenheit.
+        main.feels_like Temperature. This temperature parameter accounts for the human perception of weather. Unit Default: Kelvin, Metric: Celsius, Imperial: Fahrenheit.
+        main.pressure Atmospheric pressure (on the sea level, if there is no sea_level or grnd_level data), hPa
+        main.humidity Humidity, %
+        main.temp_min Minimum temperature at the moment. This is minimal currently observed temperature (within large megalopolises and urban areas). Unit Default: Kelvin, Metric: Celsius, Imperial: Fahrenheit.
+        main.temp_max Maximum temperature at the moment. This is maximal currently observed temperature (within large megalopolises and urban areas). Unit Default: Kelvin, Metric: Celsius, Imperial: Fahrenheit.
+        main.sea_level Atmospheric pressure on the sea level, hPa
+    m   ain.grnd_level Atmospheric pressure on the ground level, hPa
+    wind
+        wind.speed Wind speed. Unit Default: meter/sec, Metric: meter/sec, Imperial: miles/hour.
+        wind.deg Wind direction, degrees (meteorological)
+        wind.gust Wind gust. Unit Default: meter/sec, Metric: meter/sec, Imperial: miles/hour
+    clouds
+        clouds.all Cloudiness, %
+    rain
+        rain.1h Rain volume for the last 1 hour, mm
+        rain.3h Rain volume for the last 3 hours, mm
+    snow
+        snow.1h Snow volume for the last 1 hour, mm
+        snow.3h Snow volume for the last 3 hours, mm
+    dt Time of data calculation, unix, UTC
+    sys
+        sys.type Internal parameter
+        sys.id Internal parameter
+        sys.message Internal parameter
+        sys.country Country code (GB, JP etc.)
+        sys.sunrise Sunrise time, unix, UTC
+        sys.sunset Sunset time, unix, UTC
+    timezone Shift in seconds from UTC
+    id City ID
+    name City name
+    cod Internal parameter
+
+
+Possible Weather Descriptions
+    Thunderstorm
+200        Thunderstorm with light rain
+201        Thunderstorm with rain
+202        Thunderstorm with heavy rain
+210        Light Thunderstorm
+211        Thunderstorm
+212        Heavy Thunderstorm
+221        Ragged Thunderstorm
+230        Thunderstorm with light drizzle
+231        Thunderstorm with drizzle
+232        Thunderstorm with heavy drizzle
+
+    drizzle
+300        Light intensity drizzle
+301        drizzle
+302        Heavy intensity drizzle
+310        light intensity drizzle rain
+311        drizzle rain
+312        heavy intensity drizzle rain
+313        shower rain and drizzle
+314        heavy shower rain and drizzle
+321        shower drizzle
+
+    Rain
+500        light rain
+501        moderate rain
+502        heavy intensity rain
+503        very heavy rain
+504        Extreme rain
+511        freezing rain
+520        light intensity rain
+521        shower rain
+522        heavy intensity shower rain
+531        Ragged shower rain
+
+    Snow
+600        light snow
+601        Snow
+602        Heavy snow
+611        sleet
+612        light shower sleet
+613        shower sleet
+615        light rain and snow
+616        rain and snow
+620        light shower snow
+620        shower snow
+622        heavy shower snow
+
+    Atmosphere
+701        mist
+711        smoke
+721        haze
+731        sand/dust whirls
+741        fog
+751        sand
+761        dust
+762        volcanic ash
+771        squalls
+781        tornado
+
+    Clear
+800        Clear Sky
+
+    clouds
+801        Few clouds
+802        Scattered clouds
+803        broken clouds
+804        overcast clouds
+
+Pulse Out
+0
+182
+255
+Pulse Out
+0
+181
+254
+Pulse Out
+0
+180
+253
+Pulse Out
+0
+179
+252
+Pulse Out
+0
+178
+251
+Pulse Out
+0
+177
+250
+Pulse Out
+0
+176
+249
+Pulse Out
+0
+175
+248
+Pulse Out
+0
+174
+247
+Pulse Out
+0
+173
+246
+Pulse Out
+0
+172
+245
+Pulse Out
+0
+171
+244
+Pulse Out
+0
+170
+243
+Pulse Out
+0
+169
+242
+Pulse Out
+0
+168
+241
+Pulse Out
+0
+167
+240
+Pulse Out
+0
+166
+239
+Pulse Out
+0
+165
+238
+Pulse Out
+0
+164
+237
+Pulse Out
+0
+163
+236
+Pulse Out
+0
+162
+235
+Pulse Out
+0
+161
+234
+Pulse Out
+0
+160
+233
+Pulse Out
+0
+159
+232
+Pulse Out
+0
+158
+231
+Pulse Out
+0
+157
+230
+Pulse Out
+0
+156
+229
+Pulse Out
+0
+155
+228
+Pulse Out
+0
+154
+227
+Pulse Out
+0
+153
+226
+Pulse Out
+0
+152
+225
+Pulse Out
+0
+151
+224
+Pulse Out
+0
+150
+223
+Pulse Out
+0
+149
+222
+Pulse Out
+0
+148
+221
+Pulse Out
+0
+147
+220
+Pulse Out
+0
+146
+219
+Pulse Out
+0
+145
+218
+Pulse Out
+0
+144
+217
+Pulse Out
+0
+143
+216
+Pulse Out
+0
+142
+215
+Pulse Out
+0
+141
+214
+Pulse Out
+0
+140
+213
+Pulse Out
+0
+139
+212
+Pulse Out
+0
+138
+211
+Pulse Out
+0
+137
+210
+Pulse Out
+0
+136
+209
+Pulse Out
+0
+135
+208
+Pulse Out
+0
+134
+207
+Pulse Out
+0
+133
+206
