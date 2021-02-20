@@ -66,6 +66,7 @@ class Service:
 #-----------------------------------------------------------------------------------------------------------------
 class Weather:
     #------------------------------------------------------------------------------------------- Global Parameters
+    # TODO - remove key before commiting to a public repo
     api_key = "302e70e118f7ec149428d51ce6fa7459"
     base_url = "http://api.openweathermap.org/data/2.5/weather?"
     #------------------------------------------------------------------------------------------- Call Paramters
@@ -174,65 +175,65 @@ class Lights:
         startingGreen = rgb.green - pulseAmount
         startingBlue = rgb.blue - pulseAmount
 
-        for x in leds:
-            # Pulse in...
-            for i in range(0, pulseAmount, 1):
-                print("Pulse In")
-                if startingRed < 0:
-                    displayRed = 0
-                else:
-                    displayRed = startingRed
-                if startingGreen < 0:
-                    displayGreen = 0
-                else:
-                    displayGreen = startingGreen
-                if startingBlue < 0:
-                    displayBlue = 0
-                else:
-                    displayBlue = startingBlue
+        # Pulse in...
+        for i in range(0, pulseAmount, 1):
+            if startingRed < 0:
+                displayRed = 0
+            else:
+                displayRed = startingRed
+            if startingGreen < 0:
+                displayGreen = 0
+            else:
+                displayGreen = startingGreen
+            if startingBlue < 0:
+                displayBlue = 0
+            else:
+                displayBlue = startingBlue
 
-                #Printing block to show what values are being sent to the leds
-                print(displayRed)
-                print(displayGreen)
-                print(displayBlue)
+            #Printing block to show what values are being sent to the leds
+            # print(displayRed)
+            # print(displayGreen)
+            # print(displayBlue)
+            for x in leds:
                 self.strip.setPixelColor(int(x), RGB(displayRed, displayGreen, displayBlue).color)
-                self.strip.show()
-
-                startingRed += 1
-                startingGreen += 1
-                startingBlue += 1
-            time.sleep(wait_ms/1000)
-
-            # Pulse out...
-            for i in range(pulseAmount, 0, -1):
-                print("Pulse Out")
-                if startingRed < 0:
-                    displayRed = 0
-                else:
-                    displayRed = startingRed
-                if startingGreen < 0:
-                    displayGreen = 0
-                else:
-                    displayGreen = startingGreen
-                if startingBlue < 0:
-                    displayBlue = 0
-                else:
-                    displayBlue = startingBlue
-
-                #Printing block to show what values are being sent to the leds
-                print(displayRed)
-                print(displayGreen)
-                print(displayBlue)
-
-                self.strip.setPixelColor(int(x), RGB(displayRed, displayGreen, displayBlue).color)
-                self.strip.show()
-
-                startingRed -= 1
-                startingGreen -= 1
-                startingBlue -= 1
-            time.sleep(wait_ms/1000)
-            self.strip.setPixelColor(int(x), RGB(0, 0, 0).color)
             self.strip.show()
+
+            startingRed += 1
+            startingGreen += 1
+            startingBlue += 1
+        time.sleep(wait_ms/1000)
+
+        # Pulse out...
+        for i in range(pulseAmount, 0, -1):
+            if startingRed < 0:
+                displayRed = 0
+            else:
+                displayRed = startingRed
+            if startingGreen < 0:
+                displayGreen = 0
+            else:
+                displayGreen = startingGreen
+            if startingBlue < 0:
+                displayBlue = 0
+            else:
+                displayBlue = startingBlue
+
+            #Printing block to show what values are being sent to the leds
+            # print(displayRed)
+            # print(displayGreen)
+            # print(displayBlue)
+
+            for x in leds:
+                self.strip.setPixelColor(int(x), RGB(displayRed, displayGreen, displayBlue).color)
+            self.strip.show()
+
+            startingRed -= 1
+            startingGreen -= 1
+            startingBlue -= 1
+        time.sleep(wait_ms/1000)
+        for x in leds:
+            self.strip.setPixelColor(int(x), RGB(0, 0, 0).color)
+        self.strip.show()
 
     def colorWipe(self, color, wait_ms=50):
         """Wipe color across display a pixel at a time."""
@@ -251,8 +252,22 @@ class Lights:
             time.sleep(.001)
 
     # Pulse single led wihtin range at a given interval
-    def precipitationAnimation(self, rgb, leds, pulseAmount=150, wait_ms=1000):
-        self.smartPulse(rgb, leds, pulseAmount)
+    def precipitationAnimation(self, rgb, leds, pulseAmount=255):
+        subset = []
+
+        #Find random number to determine how many droplets will be displayed at once
+        dropslets = service.randomNumber(0, len(leds), 1)
+
+        #Create new array of random elements from the passed in leds array
+        for i in range(dropslets):
+            subset.append(random.choice(leds))
+
+        #Pulse the subset of leds to simulate precipitation
+        self.smartPulse(rgb, subset, pulseAmount)
+
+        #Wait a random amount of time after the animation to create some randomness between the effects
+        wait = service.randomNumber(0, 500, 1)
+        time.sleep(wait/1000)
 
     # Pulse group of leds wihtin range at a given interval
     def cloudAnimation(self, rgb, leds, wait_ms=50):
@@ -288,9 +303,33 @@ class Lights:
             wait = service.randomNumber(1, 10, 1)
             time.sleep(wait/20)
 
-    def snow(self):
-        rgb = RGB(255, 221, 0)
-        self.pulse(rgb, 0, 100)
+    def snow(self, service):
+        sortedList = service.sortByY()
+        yValues = service.getYList(sortedList)
+        ledValues = service.getLedList(sortedList)
+        cloudLayer = []
+        cloudColor = RGB(110, 110, 110)
+        snowLayer = []
+        snowColor = RGB(230, 230, 230)
+        # Assign sections for different animations ie cloud layer and rain layer
+        for x in yValues:
+            if x < 135:
+                for k in ledValues[np.where(yValues == x)]:
+                    if k not in cloudLayer:
+                        cloudLayer.append(k)
+            else:
+                for k in ledValues[np.where(yValues == x)]:
+                    if k not in snowLayer:
+                        snowLayer.append(k)
+        #_thread.start_new_thread(self.precipitationAnimation, (snowColor, snowLayer, 10))
+        # _thread.start_new_thread(self.cloudAnimation, (cloudColor, cloudLayer, 10))
+
+        #Temp code until I figure out multithreading
+        for x in cloudLayer:
+            self.strip.setPixelColor(int(x), cloudColor.color)
+        self.strip.show()
+        self.precipitationAnimation(snowColor, snowLayer)
+        # self.cloudAnimation(cloudColor, cloudLayer, 10)
 
     def rain(self, service):
         sortedList = service.sortByY()
@@ -304,11 +343,13 @@ class Lights:
         for x in yValues:
             if x < 135:
                 for k in ledValues[np.where(yValues == x)]:
-                    cloudLayer.append(k)
+                    if k not in cloudLayer:
+                        cloudLayer.append(k)
             else:
                 for k in ledValues[np.where(yValues == x)]:
-                    rainLayer.append(k)
-        # _thread.start_new_thread(self.precipitationAnimation, (rainColor, rainLayer, 10))
+                    if k not in rainLayer:
+                        rainLayer.append(k)
+        #_thread.start_new_thread(self.precipitationAnimation, (rainColor, rainLayer, 10))
         # _thread.start_new_thread(self.cloudAnimation, (cloudColor, cloudLayer, 10))
 
         #Temp code until I figure out multithreading
@@ -316,7 +357,7 @@ class Lights:
             self.strip.setPixelColor(int(x), cloudColor.color)
         self.strip.show()
         self.precipitationAnimation(rainColor, rainLayer)
-        #self.cloudAnimation(cloudColor, cloudLayer, 10)
+        # self.cloudAnimation(cloudColor, cloudLayer, 10)
 
     def sunny(self):
         rgb = RGB(255, 255, 255)
@@ -368,7 +409,7 @@ if __name__ == '__main__':
                 lights.snow()
             #------------------------------------------------------------------------------------------- Clear
             elif weather.weather_main == "Clear":
-                lights.rain(service)
+                lights.snow(service)
             #------------------------------------------------------------------------------------------- Clouds
             elif weather.weather_main == "Clouds":
                 lights.rain(service)

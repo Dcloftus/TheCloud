@@ -17,7 +17,7 @@ Reaponse parameters
         main.temp_min Minimum temperature at the moment. This is minimal currently observed temperature (within large megalopolises and urban areas). Unit Default: Kelvin, Metric: Celsius, Imperial: Fahrenheit.
         main.temp_max Maximum temperature at the moment. This is maximal currently observed temperature (within large megalopolises and urban areas). Unit Default: Kelvin, Metric: Celsius, Imperial: Fahrenheit.
         main.sea_level Atmospheric pressure on the sea level, hPa
-    m   ain.grnd_level Atmospheric pressure on the ground level, hPa
+        main.grnd_level Atmospheric pressure on the ground level, hPa
     wind
         wind.speed Wind speed. Unit Default: meter/sec, Metric: meter/sec, Imperial: miles/hour.
         wind.deg Wind direction, degrees (meteorological)
