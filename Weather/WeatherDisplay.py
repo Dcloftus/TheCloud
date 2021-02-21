@@ -150,6 +150,70 @@ class Lights:
             self.strip.setPixelColor(spotStart + i, color)
         self.strip.show()
 
+    def fadeIn(self, rgb, leds, pulseAmount, wait_ms=0):
+        startingRed = rgb.red - pulseAmount
+        startingGreen = rgb.green - pulseAmount
+        startingBlue = rgb.blue - pulseAmount
+        # Pulse in...
+        for i in range(0, pulseAmount, 1):
+            if startingRed < 0:
+                displayRed = 0
+            else:
+                displayRed = startingRed
+            if startingGreen < 0:
+                displayGreen = 0
+            else:
+                displayGreen = startingGreen
+            if startingBlue < 0:
+                displayBlue = 0
+            else:
+                displayBlue = startingBlue
+
+            #Printing block to show what values are being sent to the leds
+            # print(displayRed)
+            # print(displayGreen)
+            # print(displayBlue)
+            for x in leds:
+                self.strip.setPixelColor(int(x), RGB(displayRed, displayGreen, displayBlue).color)
+            self.strip.show()
+
+            startingRed += 1
+            startingGreen += 1
+            startingBlue += 1
+        time.sleep(wait_ms/1000)
+    def fadeOut(self, rgb, leds, pulseAmount, wait_ms=0):
+        startingRed = rgb.red
+        startingGreen = rgb.green
+        startingBlue = rgb.blue
+        # Pulse out...
+        for i in range(pulseAmount, 0, -1):
+            if startingRed < 0:
+                displayRed = 0
+            else:
+                displayRed = startingRed
+            if startingGreen < 0:
+                displayGreen = 0
+            else:
+                displayGreen = startingGreen
+            if startingBlue < 0:
+                displayBlue = 0
+            else:
+                displayBlue = startingBlue
+
+            #Printing block to show what values are being sent to the leds
+            # print(displayRed)
+            # print(displayGreen)
+            # print(displayBlue)
+
+            for x in leds:
+                self.strip.setPixelColor(int(x), RGB(displayRed, displayGreen, displayBlue).color)
+            self.strip.show()
+
+            startingRed -= 1
+            startingGreen -= 1
+            startingBlue -= 1
+        time.sleep(wait_ms/1000)
+
     def pulse(self, rgb, firstLed, lastled, wait_ms=25):
         for i in range(150, 255, 1):
             for x in range(firstLed, lastled):
@@ -223,9 +287,6 @@ class Lights:
             startingGreen -= 1
             startingBlue -= 1
         time.sleep(wait_ms/1000)
-        for x in leds:
-            self.strip.setPixelColor(int(x), RGB(0, 0, 0).color)
-        self.strip.show()
 
     def colorWipe(self, color, wait_ms=50):
         """Wipe color across display a pixel at a time."""
@@ -354,10 +415,13 @@ class Lights:
     def sunny(self, service):
         leds = service.getLedList(service.arrayOfLeds)
         sunnyColor = RGB(255, 234, 0)
+        secondarySun = RGB(244, 224, 20)
+        #secondarySun = RGB(255, 200, 0)
 
-        for x in leds:
-            self.strip.setPixelColor(int(x), sunnyColor.color)
-        self.strip.show()
+        self.precipitationAnimation(sunnyColor, leds, 100)
+
+        #self.fill(sunnyColor.color)
+        #self.fadeIn(secondarySun, leds, 100)
 
     def partlyCloudy(self):
         rgb = RGB(255, 255, 255)
@@ -388,6 +452,31 @@ if __name__ == '__main__':
     print(weather.weather_main)
 
     try:
+        #Initialize color for following animation
+        #------------------------------------------------------------------------------------------- Thunderstorm
+        if weather.weather_main == "Thunderstorm":
+            lights.fadeIn(RGB(38, 16, 99), service.getLedList(service.arrayOfLeds), 250)
+        #------------------------------------------------------------------------------------------- Drizzle
+        elif weather.weather_main == "Drizzle":
+            lights.fadeIn(RGB(110, 110, 110), service.getLedList(service.arrayOfLeds), 250)
+        #------------------------------------------------------------------------------------------- Rain
+        elif weather.weather_main == "Rain":
+            lights.fadeIn(RGB(110, 110, 110), service.getLedList(service.arrayOfLeds), 250)
+        #------------------------------------------------------------------------------------------- Snow
+        elif weather.weather_main == "Snow":
+            lights.fadeIn(RGB(110, 110, 110), service.getLedList(service.arrayOfLeds), 250)
+        #------------------------------------------------------------------------------------------- Atmosphere
+        elif weather.weather_main == "Atmosphere":
+            lights.fadeIn(RGB(255, 234, 0), service.getLedList(service.arrayOfLeds), 250)
+        #------------------------------------------------------------------------------------------- Clear
+        elif weather.weather_main == "Clear":
+            lights.fadeIn(RGB(155, 134, 0), service.getLedList(service.arrayOfLeds), 250)
+        #------------------------------------------------------------------------------------------- Clouds
+        elif weather.weather_main == "Clouds":
+            lights.fadeIn(RGB(110, 110, 110), service.getLedList(service.arrayOfLeds), 250)
+        #------------------------------------------------------------------------------------------- Fail Safe
+        else:
+            lights.fadeIn(RGB(255, 234, 0), service.getLedList(service.arrayOfLeds), 250)
         while True:
             #------------------------------------------------------------------------------------------- Thunderstorm
             if weather.weather_main == "Thunderstorm":
