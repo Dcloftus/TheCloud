@@ -149,14 +149,6 @@ class Lights:
         for i in range(length):
             self.strip.setPixelColor(spotStart + i, color)
         self.strip.show()
-        
-    def fade(self, direction, startColor, endColor, ledIndex):
-        if direction is "fadeIn":
-            print("Fade in")
-        elif direction is "fadeOut":
-            print("Fade Out")
-        else:
-            print("Incorrect Direction")
 
     def pulse(self, rgb, firstLed, lastled, wait_ms=25):
         for i in range(150, 255, 1):
@@ -252,7 +244,7 @@ class Lights:
             time.sleep(.001)
 
     # Pulse single led wihtin range at a given interval
-    def precipitationAnimation(self, rgb, leds, pulseAmount=255):
+    def precipitationAnimation(self, rgb, leds, pulseAmount=200):
         subset = []
 
         #Find random number to determine how many droplets will be displayed at once
@@ -328,7 +320,7 @@ class Lights:
         for x in cloudLayer:
             self.strip.setPixelColor(int(x), cloudColor.color)
         self.strip.show()
-        self.precipitationAnimation(snowColor, snowLayer)
+        self.precipitationAnimation(snowColor, snowLayer, 255)
         # self.cloudAnimation(cloudColor, cloudLayer, 10)
 
     def rain(self, service):
@@ -359,8 +351,13 @@ class Lights:
         self.precipitationAnimation(rainColor, rainLayer)
         # self.cloudAnimation(cloudColor, cloudLayer, 10)
 
-    def sunny(self):
-        rgb = RGB(255, 255, 255)
+    def sunny(self, service):
+        leds = service.getLedList(service.arrayOfLeds)
+        sunnyColor = RGB(255, 234, 0)
+
+        for x in leds:
+            self.strip.setPixelColor(int(x), sunnyColor.color)
+        self.strip.show()
 
     def partlyCloudy(self):
         rgb = RGB(255, 255, 255)
@@ -397,25 +394,25 @@ if __name__ == '__main__':
                 lights.thunderStorm()
             #------------------------------------------------------------------------------------------- Drizzle
             elif weather.weather_main == "Drizzle":
-                lights.thunderStorm()
+                lights.rain(service)
             #------------------------------------------------------------------------------------------- Rain
             elif weather.weather_main == "Rain":
-                lights.thunderStorm()
+                lights.rain(service)
             #------------------------------------------------------------------------------------------- Snow
             elif weather.weather_main == "Snow":
-                lights.rain(service)
+                lights.snow(service)
             #------------------------------------------------------------------------------------------- Atmosphere
             elif weather.weather_main == "Atmosphere":
-                lights.snow()
+                lights.snow(service)
             #------------------------------------------------------------------------------------------- Clear
             elif weather.weather_main == "Clear":
-                lights.snow(service)
+                lights.sunny(service)
             #------------------------------------------------------------------------------------------- Clouds
             elif weather.weather_main == "Clouds":
                 lights.rain(service)
             #------------------------------------------------------------------------------------------- Fail Safe
             else:
-                lights.snow()
+                lights.sunny(service)
     except KeyboardInterrupt:
         if args.clear:
             lights.clear()
